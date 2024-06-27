@@ -29,11 +29,7 @@ const register = async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: "2h" }
       );
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "Strict",
-      });
+      res.cookie("token", token, { httpOnly: true });
       res.status(201).json({
         succes: true,
         msg: "user registered successfully",
@@ -83,11 +79,7 @@ const login = async (req, res) => {
       { expiresIn: "2h" }
     );
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-    });
+    res.cookie("token", token);
 
     return res
       .status(200)
@@ -208,6 +200,21 @@ const changePassword = async (req, res) => {
   }
 };
 
+const logout = async function (req, res) {
+  try {
+    res.clearCookie("token", { path: "/" });
+    res.status(200).json({
+      success: true,
+      message: "User Logout",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({
+      error: new Error("Invalid request!"),
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -215,4 +222,5 @@ module.exports = {
   forgetPassword,
   resetPassword,
   changePassword,
+  logout,
 };

@@ -1,9 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import "../../index.css";
+import useOneTimeRefresh from "../../hooks/useOneTimeRefresh";
 
 function Sucess() {
-  const [userData, setUserData] = useState({ firstName: "", lastname: "" });
+  // var hide = document.querySelector(".hide");
+  // hide.style.display = "none";
+  // localStorage.setItem("isHidden", "true");
+  useOneTimeRefresh("successPageIdentifiers");
+
+  const [userData, setUserData] = useState({ firstName: "", lastName: "" });
 
   useEffect(() => {
     async function getUsername() {
@@ -18,14 +25,19 @@ function Sucess() {
           firstName: response.data.User.firstName,
           lastname: response.data.User.lastName,
         });
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({
+            firstName: response.data.User.firstName,
+            lastName: response.data.User.lastName,
+          })
+        );
       } catch (error) {
         console.log(error);
       }
     }
     getUsername();
   }, []);
-
-  localStorage.setItem("userData", JSON.stringify({ userData }));
 
   const [redirect, setRedirect] = useState(false);
 
@@ -49,4 +61,5 @@ function Sucess() {
     </div>
   );
 }
+
 export default Sucess;

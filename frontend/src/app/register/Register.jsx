@@ -40,7 +40,8 @@ function Register() {
     }
 
     if (redirect) {
-        return <Navigate to="/login/done" replace={true} />;
+        localStorage.setItem('registerLinkHidden', 'true');
+        window.location.assign('/login/done');
     }
 
     async function submitHandler(e) {

@@ -28,7 +28,10 @@ function Login() {
 
 
     if (redirect) {
-        return <Navigate to="/login/done" replace={true} />;
+        localStorage.setItem('loginLinkHidden', 'true');
+        localStorage.setItem('registerLinkHidden', 'true');
+        //return <Navigate to="/login/done" replace={true} />;
+        window.location.assign('/login/done');
     }
 
     if (redirectForget) {
