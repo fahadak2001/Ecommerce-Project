@@ -81,13 +81,38 @@ const updateProduct = async (req, res) => {
 };
 
 const allProduct = async (req, res) => {
-  console.log("test");
+  let { page, pageSize, category } = req.query;
   try {
-    const products = await productModel.find();
-    res.status(200).json({ success: true, data: products });
+    page = parseInt(page, 10) || 1;
+    pageSize = parseInt(pageSize, 10) || 50;
+    const skip = (page - 1) * pageSize;
+
+    let query = {};
+    if (category) {
+      query.category = category;
+    }
+    const totalProductsCat = await productModel.find(query).countDocuments();
+    const products = await productModel.find(query).skip(skip).limit(pageSize);
+    const totalProducts = await productModel.countDocuments();
+    res.status(200).json({
+      totalProductsCat,
+      success: true,
+      page,
+      pageSize,
+      totalProducts,
+      totalPages: Math.ceil(totalProductsCat / pageSize),
+      products,
+    });
   } catch (error) {
-    res.status(400).json({ success: false });
+    res.status(400).json({ message: "Unsuccessful", error });
   }
+  // console.log("test");
+  // try {
+  //   const products = await productModel.find();
+  //   res.status(200).json({ success: true, data: products });
+  // } catch (error) {
+  //   res.status(400).json({ success: false });
+  // }
 };
 
 module.exports = {
