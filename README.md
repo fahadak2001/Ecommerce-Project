@@ -1,4 +1,8 @@
 This is a ongoing eccommerce project in MERN stack.
+v1.3) Pagination(backend) User can now paginate with 8 products per page. 
+Demo...https://github.com/fahadak2001/Ecommerce-Project/assets/61794596/bc993a98-63d5-4621-98fe-364047b0f575
+
+
 v1.2) Users can now sort products high to low or low to high. The user can also filter products to a max price. Furthermore user can now logout clearing the local data and cookies.
 Demo...https://github.com/fahadak2001/Ecommerce-Project/assets/61794596/ec8068c0-dff0-406d-aee8-47e3b2e893cd
 
