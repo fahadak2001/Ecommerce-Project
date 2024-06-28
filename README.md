@@ -1,4 +1,5 @@
 This is a ongoing eccommerce project in MERN stack.
+
 v1.3) Pagination(backend) User can now paginate with 8 products per page. 
 Demo...https://github.com/fahadak2001/Ecommerce-Project/assets/61794596/bc993a98-63d5-4621-98fe-364047b0f575
 
