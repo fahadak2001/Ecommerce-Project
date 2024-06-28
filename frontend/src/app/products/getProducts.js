@@ -4,16 +4,28 @@ import axios from "axios";
 function ProductComponent({ triggereffect }) {
   const [allProducts, setAllProducts] = useState([]);
   const [currentproducts, setCurrentProducts] = useState([]);
+
   const [productName, setProductName] = useState("All Products");
   const [range, setRange] = useState("50000");
+
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(8);
+  const [totalPages, setTotalPages] = useState(1);
+  const [category, setCategory] = useState("");
 
   const fetchProducts = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/v1/product/all"
+        `http://localhost:5000/api/v1/product/all`,
+        {
+          params: { page, pageSize, category },
+        }
       );
-      setAllProducts(response.data.data);
-      setCurrentProducts(response.data.data);
+
+      setAllProducts(response.data.products);
+      setCurrentProducts(response.data.products);
+
+      setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -21,7 +33,7 @@ function ProductComponent({ triggereffect }) {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [page, pageSize, category]);
 
   async function addToProduct(productID) {
     const res = await axios.post(
@@ -44,15 +56,18 @@ function ProductComponent({ triggereffect }) {
 
   function clickHandler(e) {
     const name = e.target.name;
-    const fetchedproducts = allProducts.filter(
-      (myProducts) => myProducts.category === name
-    );
-    setCurrentProducts(fetchedproducts);
+
+    setCategory(name);
+    // const fetchedproducts = allProducts.filter(
+    //   (myProducts) => myProducts.category === name
+    // );
+    // setCurrentProducts(fetchedproducts);
+
     setProductName(name);
   }
 
   function allProductClickHandler(e) {
-    setCurrentProducts(allProducts);
+    setCategory("");
     setProductName(e.target.name);
   }
 
@@ -168,21 +183,49 @@ function ProductComponent({ triggereffect }) {
           <div>
             <h6>Max Price:{range}</h6>
           </div>
-          50$
+          10$
           <input
             type="range"
             range={range}
-            min="50"
-            max="3000"
-            step="100"
+            min="10"
+            max="2000"
+            step="10"
             onChange={handleRange}
           />
-          3000$
+          2000$
         </div>
         <button onClick={filterProducts}>Go</button>
       </div>
     );
   };
+
+  function pagination() {
+    return (
+      <div className="flex items-center justify-center space-x-2 mt-4">
+        <button
+          onClick={() => {
+            if (page > 1) {
+              setPage(page - 1);
+            }
+          }}
+          className="px-2 py-1 bg-blue-500 text-sm text-white rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Prev
+        </button>
+        <span className="text-sm font-bold">{page}</span>
+        <button
+          onClick={() => {
+            if (page < totalPages) {
+              setPage(page + 1);
+            }
+          }}
+          className="px-2 py-1 bg-blue-500 text-sm text-white rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Next
+        </button>
+      </div>
+    );
+  }
 
   const getallproducts = () => {
     return (
@@ -244,6 +287,7 @@ function ProductComponent({ triggereffect }) {
             </div>
           ))}
         </div>
+        {pagination()}
       </div>
     );
   };
