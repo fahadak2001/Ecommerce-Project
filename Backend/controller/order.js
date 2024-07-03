@@ -105,13 +105,16 @@ const deleteOrderbyOrderID = async (req, res) => {
 const countOrders = async (req, res) => {
   try {
     const { token } = req.cookies;
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const userID = decodedToken.id;
-    const count = await orderModel.countDocuments({ user: userID });
-    console.log(count);
-    res.status(200).json({ count, message: "count returned" });
+    if (token) {
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+      const userID = decodedToken.id;
+      const count = await orderModel.countDocuments({ user: userID });
+      res.status(200).json({ count, message: "count returned" });
+    } else {
+      const count = 0;
+      res.status(200).json({ count, message: "no JWT 0 count returned" });
+    }
   } catch (error) {
-    console.log(error);
     res.status(400).json({
       success: false,
       error: error.message,

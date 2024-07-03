@@ -9,6 +9,7 @@ import Sucess from "./app/Login_sucess/loginSucess";
 import GetProducts from "./app/products/getProducts";
 import GetAllOrders from "./app/order/getorder";
 import axios from "axios";
+import ViewProduct from "./app/products/viewProduct";
 import "./index.css";
 import cookie from "js-cookie";
 
@@ -28,10 +29,13 @@ const RoutesWrapper = ({ triggereffect }) => {
       <Route path="/login/done" element={<Sucess />} />
       <Route path="/" element={<GetProducts triggereffect={triggereffect} />} />
       <Route path="/getOrders" element={<GetAllOrders triggereffect={triggereffect} />} />
+      <Route path="/products/specific/:productId" element={<ViewProduct triggereffect={triggereffect} />} />
     </Routes>
   );
 
-  if (location.pathname !== '/' && location.pathname !== '/getorders') {
+  const productSpecificPattern = /^\/products\/specific\/[^/]+$/;
+
+  if (location.pathname !== '/' && location.pathname !== '/getorders' && location.pathname && !productSpecificPattern.test(location.pathname)) {
     return (
       <div className="bg-gray-700" style={{ height: "450px", position: "relative", width: "450px", padding: "30px", margin: "auto", marginTop: "20px", marginBottom: "40px", borderRadius: "10%", color: "white" }}>
         {routes}
@@ -44,12 +48,6 @@ const RoutesWrapper = ({ triggereffect }) => {
 
 
 const App = () => {
-  // window.onload = function () {
-  //   var hide = document.querySelector(".hide");
-  //   if (localStorage.getItem('isHidden') === 'true') {
-  //     hide.style.display = "none";
-  //   }
-  // }
 
   function addremoveinfo() {
     if (localStorage.getItem('loginLinkHidden') === 'true') {
@@ -75,7 +73,6 @@ const App = () => {
     try {
       const response = await axios.get("http://localhost:5000/api/v1/order/count", { withCredentials: true });
       setCount(response.data.count);
-      console.log(response.data.count);
     } catch (error) {
       console.error("Error fetching order count:", error);
     }
@@ -124,6 +121,15 @@ const App = () => {
     setUserData(); getCount(); addremoveinfo();
   }, [trigger]);
 
+  function getOrders() {
+    if (count > 0) {
+      window.location.assign('/getorders');
+    }
+    else {
+      window.alert("login to view cart")
+    }
+  }
+
   return (
     <Router>
       <div>
@@ -139,7 +145,7 @@ const App = () => {
               <button onClick={() => { clearall() }} className="text-sm text-blue-600 dark:text-blue-500 hover:underline">Logout</button>
               <div style={{ color: "white" }}>
                 <div style={{ color: "white" }}>{count}</div>
-                <a href="/getorders"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24"><path fill="white" d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25q0-.075.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2" /></svg></a>
+                <a className="cursor-pointer" onClick={() => { getOrders() }}><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24"><path fill="white" d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25q0-.075.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2" /></svg></a>
               </div>
             </div>
           </div>

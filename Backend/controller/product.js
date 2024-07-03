@@ -42,13 +42,26 @@ const createProduct = async (req, res) => {
 
 const readProduct = async (req, res) => {
   try {
-    const { productName } = req.body;
-    const foundproduct = await productModel.findOne({ productName });
-    if (foundproduct) {
-      res.status(200).json({ mssg: "product found succesfully" });
+    const { productId } = req.params;
+    if (!productId) {
+      return res
+        .status(400)
+        .json({ success: false, mssg: "Product ID is required" });
+    }
+
+    const foundProduct = await productModel.findById(productId);
+    if (foundProduct) {
+      return res
+        .status(200)
+        .json({ mssg: "Product found successfully", foundProduct });
+    } else {
+      return res
+        .status(404)
+        .json({ success: false, mssg: "Product not found" });
     }
   } catch (error) {
-    res.status(400).json({ success: false });
+    console.error(error);
+    return res.status(500).json({ success: false, mssg: "Server error" });
   }
 };
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 function ProductComponent({ triggereffect }) {
   const [allProducts, setAllProducts] = useState([]);
@@ -12,6 +13,9 @@ function ProductComponent({ triggereffect }) {
   const [pageSize, setPageSize] = useState(8);
   const [totalPages, setTotalPages] = useState(1);
   const [category, setCategory] = useState("");
+
+  const [redirect, setRedirect] = useState(false);
+  const [productId, setProductId] = useState("");
 
   const fetchProducts = async () => {
     try {
@@ -36,15 +40,19 @@ function ProductComponent({ triggereffect }) {
   }, [page, pageSize, category]);
 
   async function addToProduct(productID) {
-    const res = await axios.post(
-      "http://localhost:5000/api/v1/order/create",
-      { productID },
-      {
-        withCredentials: true,
-      }
-    );
-    triggereffect();
-    console.log(res);
+    //cart
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/v1/order/create",
+        { productID },
+        {
+          withCredentials: true,
+        }
+      );
+      triggereffect();
+    } catch (error) {
+      window.alert("login please, Token might expired please login agian");
+    }
   }
 
   function truncateText(text, maxLength) {
@@ -56,13 +64,7 @@ function ProductComponent({ triggereffect }) {
 
   function clickHandler(e) {
     const name = e.target.name;
-
     setCategory(name);
-    // const fetchedproducts = allProducts.filter(
-    //   (myProducts) => myProducts.category === name
-    // );
-    // setCurrentProducts(fetchedproducts);
-
     setProductName(name);
   }
 
@@ -111,6 +113,15 @@ function ProductComponent({ triggereffect }) {
     } else if (value === "high") {
       high();
     }
+  }
+
+  function redirectProduct(PID) {
+    setRedirect(true);
+    setProductId(PID);
+  }
+
+  if (redirect) {
+    return <Navigate to={`/products/specific/${productId}`} />;
   }
 
   const Sidebar = () => {
@@ -252,18 +263,21 @@ function ProductComponent({ triggereffect }) {
           {currentproducts.map((product) => (
             <div
               key={product._id}
-              className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-3"
+              className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-3 "
             >
-              <div className="bg-white shadow-lg flex flex-col h-full">
+              <div className="bg-white shadow-lg flex flex-col h-full ">
                 <div className="flex-none">
                   <img
+                    onClick={(e) => {
+                      redirectProduct(product._id);
+                    }}
                     src={product.thumbnail}
                     alt=""
-                    className="w-full object-cover h-48 mb-2"
+                    className="w-full object-cover h-48 mb-2 cursor-pointer"
                   />
                 </div>
 
-                <div className="flex-auto p-4">
+                <div className="flex-auto p-4 ">
                   <h2 className="text-base h-10 font-semibold mb-1">
                     {product.title}
                   </h2>
