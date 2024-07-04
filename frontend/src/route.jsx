@@ -8,6 +8,7 @@ import ResetPassword from "./app/resetpassword/Resetpassword";
 import Sucess from "./app/Login_sucess/loginSucess";
 import GetProducts from "./app/products/getProducts";
 import GetAllOrders from "./app/order/getorder";
+import LoginAdmin from "./app/Admin/adminLogin.jsx";
 import axios from "axios";
 import ViewProduct from "./app/products/viewProduct";
 import "./index.css";
@@ -30,18 +31,20 @@ const RoutesWrapper = ({ triggereffect }) => {
       <Route path="/" element={<GetProducts triggereffect={triggereffect} />} />
       <Route path="/getOrders" element={<GetAllOrders triggereffect={triggereffect} />} />
       <Route path="/products/specific/:productId" element={<ViewProduct triggereffect={triggereffect} />} />
+
+      <Route path="/admin/login" element={<LoginAdmin />} />
     </Routes>
   );
 
   const productSpecificPattern = /^\/products\/specific\/[^/]+$/;
 
-  if (location.pathname !== '/' && location.pathname !== '/getorders' && location.pathname && !productSpecificPattern.test(location.pathname)) {
-    return (
-      <div className="bg-gray-700" style={{ height: "450px", position: "relative", width: "450px", padding: "30px", margin: "auto", marginTop: "20px", marginBottom: "40px", borderRadius: "10%", color: "white" }}>
-        {routes}
-      </div>
-    );
-  }
+  // if (location.pathname !== '/' && location.pathname !== '/getorders' && location.pathname && !productSpecificPattern.test(location.pathname) && location.pathname !== "/admin/login") {
+  //   return (
+  //     <div className="bg-gray-700" style={{ height: "450px", position: "relative", width: "450px", padding: "30px", margin: "auto", marginTop: "20px", marginBottom: "40px", borderRadius: "10%", color: "white" }}>
+  //       {routes}
+  //     </div>
+  //   );
+  // }
 
   return routes;
 };
@@ -108,12 +111,8 @@ const App = () => {
     console.log("Token cookie cleared");
     localStorage.setItem("userData", JSON.stringify({ firstName: "", lastname: "" }));
     console.log("Local storage cleared");
-    //setclassname("show");
-    // var hide = document.querySelector(".hide");
-    // hide.style.display = "block";
     localStorage.setItem('loginLinkHidden', 'false');
     localStorage.setItem('registerLinkHidden', 'false');
-    //window.location.reload();
     window.location.assign('/login');
   }
 
@@ -160,16 +159,13 @@ const App = () => {
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">MyEcommerce</span>
             <ul className="flex flex-wrap items-center mb-2 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
               <li>
-                <a href="#" className="hover:underline me-4 md:me-6">Products</a>
+                <a href="/" className="hover:underline me-4 md:me-6">Products</a>
               </li>
               <li>
-                <a href="#" className="hover:underline me-4 md:me-6">My Catalogue</a>
+                <a href="/admin/login" className="hover:underline me-4 md:me-6">Admin Acess</a>
               </li>
               <li>
-                <a href="#" className="hover:underline me-4 md:me-6">Licensing</a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">Contact</a>
+                <a href="fahad-asim2001@live.com" className="hover:underline">Contact</a>
               </li>
             </ul>
           </div>

@@ -27,7 +27,7 @@ const register = async (req, res) => {
           id: registerUser._id,
         },
         process.env.JWT_SECRET,
-        { expiresIn: "2h" }
+        { expiresIn: "12h" }
       );
       res.cookie("token", token, { httpOnly: true });
       res.status(201).json({
@@ -91,6 +91,7 @@ const login = async (req, res) => {
     });
   }
 };
+
 const authenticateToken = async (req, res) => {
   try {
     const { token } = req.cookies;

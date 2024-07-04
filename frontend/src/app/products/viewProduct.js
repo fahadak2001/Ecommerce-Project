@@ -27,17 +27,19 @@ function ViewProduct({ triggereffect }) {
   }, []);
 
   async function addtoCart() {
-    console.log(productId);
     const productID = productId;
-    const res = await axios.post(
-      "http://localhost:5000/api/v1/order/create",
-      { productID },
-      {
-        withCredentials: true,
-      }
-    );
-    triggereffect();
-    console.log(res);
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/v1/order/create",
+        { productID },
+        {
+          withCredentials: true,
+        }
+      );
+      triggereffect();
+    } catch (error) {
+      window.alert("login please, Token might expired please login agian");
+    }
   }
 
   const goToNextSlide = () => {
