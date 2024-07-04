@@ -1,5 +1,8 @@
 This is a ongoing eccommerce project in MERN stack.
 
+v1.5) UI update to the shit UI
+Demo...https://github.com/fahadak2001/Ecommerce-Project/assets/61794596/ad64c8a5-bfd5-4ce1-86db-fffde3d9f6b0
+
 v1.4) User can view products individually with description, rating, stock etc. Many bug fixes. 
 Demo...
 https://github.com/fahadak2001/Ecommerce-Project/assets/61794596/4854da4b-9f75-499e-bcd6-a6c8941436b1
