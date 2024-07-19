@@ -9,11 +9,12 @@ import Sucess from "./app/Login_sucess/loginSucess";
 import GetProducts from "./app/products/getProducts";
 import GetAllOrders from "./app/order/getorder";
 import LoginAdmin from "./app/Admin/adminLogin.jsx";
+import AdminDasboard from "./app/Admin/adminDashboard.jsx";
 import axios from "axios";
 import ViewProduct from "./app/products/viewProduct";
+import Home from "./Home.jsx";
 import "./index.css";
 import cookie from "js-cookie";
-
 
 const RoutesWrapper = ({ triggereffect }) => {
 
@@ -22,21 +23,23 @@ const RoutesWrapper = ({ triggereffect }) => {
 
   const routes = (
     <Routes>
+      <Route path="/" element={<Home />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/changepassword" element={<ChangePassword />} />
       <Route path="/forgotpassword" element={<Forgotpassword />} />
       <Route path="/reset/:token" element={<ResetPassword />} />
       <Route path="/login/done" element={<Sucess />} />
-      <Route path="/" element={<GetProducts triggereffect={triggereffect} />} />
+      <Route path="/shop" element={<GetProducts triggereffect={triggereffect} />} />
       <Route path="/getOrders" element={<GetAllOrders triggereffect={triggereffect} />} />
       <Route path="/products/specific/:productId" element={<ViewProduct triggereffect={triggereffect} />} />
 
       <Route path="/admin/login" element={<LoginAdmin />} />
+      <Route path="/admin/login/sucess" element={<AdminDasboard />} />
     </Routes>
   );
 
-  const productSpecificPattern = /^\/products\/specific\/[^/]+$/;
+  //const productSpecificPattern = /^\/products\/specific\/[^/]+$/;
 
   // if (location.pathname !== '/' && location.pathname !== '/getorders' && location.pathname && !productSpecificPattern.test(location.pathname) && location.pathname !== "/admin/login") {
   //   return (
@@ -131,35 +134,36 @@ const App = () => {
 
   return (
     <Router>
-      <div>
-        <nav className="bg-gray-800 fixed top-0 w-full z-10">
-          <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
-            <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">My Eccommerce</span>
-            </a>
-            <div className="flex items-center space-x-6 rtl:space-x-reverse">
-              <div style={{ color: "white" }}> {firstName}  {lastName}</div>
-              <a href="/login" className={` text-sm text-blue-600 dark:text-blue-500 hover:underline`}>Login</a>
-              <a href="/register" className={` text-sm text-blue-600 dark:text-blue-500 hover:underline`}>Register</a>
-              <button onClick={() => { clearall() }} className="text-sm text-blue-600 dark:text-blue-500 hover:underline">Logout</button>
-              <div style={{ color: "white" }}>
-                <div style={{ color: "white" }}>{count}</div>
-                <a className="cursor-pointer" onClick={() => { getOrders() }}><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24"><path fill="white" d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25q0-.075.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2" /></svg></a>
-              </div>
+
+      <nav className="bg-white w-full ">
+        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
+          <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-blue-950">My Eccommerce</span>
+          </a>
+          <div className="flex items-center space-x-6 rtl:space-x-reverse">
+            <div style={{ color: "white" }}> {firstName}  {lastName}</div>
+            <a href="/login" className={` text-sm text-blue-950 dark:text-blue-950 hover:underline`}>Login</a>
+            <a href="/register" className={` text-sm text-blue-950 dark:text-blue-950 hover:underline`}>Register</a>
+            <button onClick={() => { clearall() }} className="text-sm text-blue-950 dark:text-blue-950 hover:underline">Logout</button>
+            <div className="to-blue-950">
+              <div className="to-blue-950">{count}</div>
+              <a className="cursor-pointer" onClick={() => { getOrders() }}><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24"><path fill="blue-950" d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25q0-.075.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2" /></svg></a>
             </div>
           </div>
-        </nav>
-        <div style={{ position: "relative", top: "95px", bottom: "1000px" }}>
-          <RoutesWrapper triggereffect={triggereffect} />
         </div>
+      </nav>
+
+      <div className="">
+        <RoutesWrapper triggereffect={triggereffect} />
       </div>
-      <footer className="bg-gray-800 shadow dark:bg-gray-900 relative top-20 w-full p-2" >
+
+      <footer className="bg-gray-600 shadow dark:bg-gray-900 relative top-20 w-full p-2" >
         <div className="w-full max-w-screen-xl mx-auto md:py-4">
           <div className="sm:flex sm:items-center sm:justify-between">
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">MyEcommerce</span>
             <ul className="flex flex-wrap items-center mb-2 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
               <li>
-                <a href="/" className="hover:underline me-4 md:me-6">Products</a>
+                <a href="/shop" className="hover:underline me-4 md:me-6">Products</a>
               </li>
               <li>
                 <a href="/admin/login" className="hover:underline me-4 md:me-6">Admin Acess</a>

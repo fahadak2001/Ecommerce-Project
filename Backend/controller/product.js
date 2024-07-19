@@ -67,8 +67,9 @@ const readProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   try {
-    const { productName } = req.body;
-    const foundproduct = await productModel.findOneAndDelete({ productName });
+    const { id } = req.body;
+    console.log(id);
+    const foundproduct = await productModel.findOneAndDelete({ _id: id });
     if (foundproduct) {
       res.status(200).json({ mssg: "product deleted succesfully" });
     }
@@ -97,7 +98,7 @@ const allProduct = async (req, res) => {
   let { page, pageSize, category } = req.query;
   try {
     page = parseInt(page, 10) || 1;
-    pageSize = parseInt(pageSize, 10) || 50;
+    pageSize = parseInt(pageSize, 10) || 100;
     const skip = (page - 1) * pageSize;
 
     let query = {};

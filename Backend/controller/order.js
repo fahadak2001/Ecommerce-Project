@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const createOrder = async (req, res) => {
   try {
     const { token } = req.cookies;
+    console.log(token);
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     userID = decodedToken.id;
     const { productID } = req.body;

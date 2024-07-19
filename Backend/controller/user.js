@@ -2,6 +2,7 @@ const user = require("../model/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Transport = require("../utils/sendMail");
+const admin = require("../model/admin");
 
 const register = async (req, res) => {
   try {
@@ -216,6 +217,32 @@ const logout = async function (req, res) {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const { token } = req.cookies;
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const { authAdmin } = decodedToken.email;
+    const foundAdmin = await admin.findOne({ authAdmin });
+    const allUsers = await user.find();
+    if (foundAdmin) {
+      res.status(200).json({ sucess: true, allUsers });
+    }
+  } catch (error) {
+    res.status(401).json({ sucess: false, message: "Unable to get users" });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.body;
+    console.log(id);
+    const deleteUser = await user.findOneAndDelete({ _id: id });
+    res.status(200).json({ message: "user deleted", deleteUser });
+  } catch (error) {
+    res.status(400).json({ sucess: false, message: "Unable to delete users" });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -224,4 +251,6 @@ module.exports = {
   resetPassword,
   changePassword,
   logout,
+  getAllUsers,
+  deleteUser,
 };

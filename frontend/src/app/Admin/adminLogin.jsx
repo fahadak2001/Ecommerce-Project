@@ -2,10 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
+const login = require("../../icons/key.png")
 
 const LoginAdmin = () => {
-
-
 
   const [redirect, setRedirect] = useState(false);
   const [redirectForget, setRedirectForget] = useState(false);
@@ -26,6 +25,7 @@ const LoginAdmin = () => {
   if (redirect) {
     localStorage.setItem('loginLinkHidden', 'true');
     localStorage.setItem('registerLinkHidden', 'true');
+    return <Navigate to="/admin/login/sucess" replace={true} />
   }
 
   if (redirectForget) {
@@ -35,7 +35,7 @@ const LoginAdmin = () => {
   async function submitHandler(e) {
     e.preventDefault();
     console.log(admin);
-    await axios.post('http://localhost:5000/api/v1/admin/login', admin).then((response) => {
+    await axios.post('http://localhost:5000/api/v1/admin/login', admin, { withCredentials: true }).then((response) => {
       console.log("response", response)
       toast.success("Admin login sucessfull");
       setRedirect(true);
@@ -55,7 +55,7 @@ const LoginAdmin = () => {
   return (
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company" />
+        <img class="mx-auto h-10 w-auto" src={login} alt="Your Company" />
         <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your Admin account</h2>
       </div>
 
