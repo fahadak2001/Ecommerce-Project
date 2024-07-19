@@ -1,6 +1,9 @@
 This is a ongoing eccommerce project in MERN stack.
 
-Next:- Complete Admin Panel
+Next:- Further working on landing page and admin dashboard
+
+v1.6) Landing page created (working on it still)...admin dashboard created where admin can view all users, delete em. Also admin can view all products and add more products. 
+Demo...https://github.com/user-attachments/assets/ed918dff-a7a6-4ac3-b471-f268baeece64
 
 v1.5) UI update to the bad UI
 Demo...https://github.com/fahadak2001/Ecommerce-Project/assets/61794596/ad64c8a5-bfd5-4ce1-86db-fffde3d9f6b0
