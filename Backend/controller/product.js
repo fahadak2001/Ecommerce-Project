@@ -1,4 +1,5 @@
 const productModel = require("../model/product");
+const multer = require("multer");
 
 const createProduct = async (req, res) => {
   try {
@@ -12,8 +13,13 @@ const createProduct = async (req, res) => {
       brand,
       category,
       thumbnail,
-      images,
     } = req.body;
+    const imagesss = req.files.map((file) => {
+      const fileBase64 = file.buffer.toString("base64");
+      const mimeType = file.mimetype;
+      return `data:${mimeType};base64,${fileBase64}`;
+    });
+
     const createdProduct = await productModel.create({
       title: title,
       description: description,
@@ -23,9 +29,10 @@ const createProduct = async (req, res) => {
       stock: stock,
       brand: brand,
       category: category,
-      thumbnail: thumbnail,
-      images: images,
+      thumbnail: imagesss[0],
+      images: imagesss,
     });
+
     res.status(201).json({
       succes: true,
       msg: "product created successfully",

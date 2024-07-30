@@ -27,6 +27,7 @@ function ProductComponent({ triggereffect }) {
       );
 
       setAllProducts(response.data.products);
+      console.log("data for product", response.data);
       setCurrentProducts(response.data.products);
 
       setTotalPages(response.data.totalPages);
@@ -239,6 +240,7 @@ function ProductComponent({ triggereffect }) {
   }
 
   const getallproducts = () => {
+    console.log(currentproducts.images);
     return (
       <div className="flex-1 p-4">
         <div>

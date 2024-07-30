@@ -1,10 +1,11 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 const login = require("../../icons/key.png")
 
 const LoginAdmin = () => {
+
 
   const [redirect, setRedirect] = useState(false);
   const [redirectForget, setRedirectForget] = useState(false);
@@ -13,6 +14,23 @@ const LoginAdmin = () => {
     email: "",
     password: ""
   })
+
+  async function checkAuth() {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/v1/admin/auth",
+        { withCredentials: true }
+      );
+      console.log(response)
+      setRedirect(true);
+    } catch (error) {
+      setRedirect(false);
+    }
+  }
+
+  useEffect(() => {
+    checkAuth()
+  }, [])
 
 
   function changeHandler(e) {
@@ -39,6 +57,7 @@ const LoginAdmin = () => {
       console.log("response", response)
       toast.success("Admin login sucessfull");
       setRedirect(true);
+      localStorage.setItem("adminlogin", true)
     })
       .catch((err) => {
         console.log("error", err);

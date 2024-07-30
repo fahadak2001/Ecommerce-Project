@@ -76,7 +76,29 @@ const loginAdmin = async (req, res) => {
   }
 };
 
+const authenticateAdminToken = async (req, res) => {
+  try {
+    console.log("Auth");
+    const { token } = req.cookies;
+    const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
+    const adminid = decodedToken.id;
+    const User = await admin.findById(adminid);
+    if (User) {
+      res.status(200).json({
+        User,
+        message: "Successfully authenticated",
+        isAuthenticated: true,
+      });
+    } else {
+      throw new Error("admin not found");
+    }
+  } catch (error) {
+    res.status(401).json({ error: "Invalid request!" });
+  }
+};
+
 module.exports = {
   registerAdmin,
   loginAdmin,
+  authenticateAdminToken,
 };

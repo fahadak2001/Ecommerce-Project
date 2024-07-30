@@ -10,7 +10,11 @@ const {
   getAllUsers,
   deleteUser,
 } = require("../controller/user");
-const { registerAdmin, loginAdmin } = require("../controller/admin");
+const {
+  registerAdmin,
+  loginAdmin,
+  authenticateAdminToken,
+} = require("../controller/admin");
 const router = express.Router();
 
 router.post("/user/register", register);
@@ -25,5 +29,7 @@ router.post("/admin/register", registerAdmin);
 router.post("/admin/login", loginAdmin);
 router.get("/admin/login/sucess/users", getAllUsers);
 router.post("/admin/login/sucess/users/delete", deleteUser);
+
+router.get("/admin/auth", authenticateAdminToken);
 
 module.exports = router;
