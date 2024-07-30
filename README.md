@@ -2,6 +2,8 @@ This is a ongoing eccommerce project in MERN stack.
 
 Next:- Further working on landing page and admin dashboard
 
+v1.7) Redux implemented in getting products in products dashboard...user can now upload products without any bugs using multer...
+
 v1.6) Landing page created (working on it still)...admin dashboard created where admin can view all users, delete em. Also admin can view all products and add more products. 
 Demo...https://github.com/user-attachments/assets/ed918dff-a7a6-4ac3-b471-f268baeece64
 
