@@ -18,6 +18,7 @@ function ViewProduct({ triggereffect }) {
       `http://localhost:5000/api/v1/product/find/${productId}`
     );
     setProduct(res.data.foundProduct);
+    console.log("current product", product);
   }
 
   console.log(product);
@@ -69,15 +70,19 @@ function ViewProduct({ triggereffect }) {
                     swiperRef.current = swiper;
                   }}
                 >
-                  {product.images.map((mappedImage, index) => (
-                    <SwiperSlide key={index}>
-                      <img
-                        class="hidden dark:block h-[448px] w-[448px] object-contain"
-                        src={mappedImage}
-                        alt=""
-                      />
-                    </SwiperSlide>
-                  ))}
+                  {product.images.map((mappedImage, index) => {
+                    return (
+                      <>
+                        <SwiperSlide key={index}>
+                          <img
+                            class="hidden dark:block h-[448px] w-[448px] object-contain"
+                            src={mappedImage}
+                            alt=""
+                          />
+                        </SwiperSlide>
+                      </>
+                    );
+                  })}
                 </Swiper>
               </div>
             </div>

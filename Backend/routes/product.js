@@ -8,7 +8,12 @@ const {
 } = require("../controller/product");
 const router = express.Router();
 
-router.post("/product/create", createProduct);
+const multer = require("multer");
+const { storage } = multer.memoryStorage();
+const upload = multer({ storage });
+
+router.post("/product/create", upload.array("images", 5), createProduct);
+
 router.post("/product/find/:productId", readProduct);
 router.post("/product/delete", deleteProduct);
 router.patch("/product/update", updateProduct);

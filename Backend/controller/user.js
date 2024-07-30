@@ -95,13 +95,20 @@ const login = async (req, res) => {
 
 const authenticateToken = async (req, res) => {
   try {
+    console.log("Auth");
     const { token } = req.cookies;
     const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
     const userid = decodedToken.id;
-    console.log(userid);
     const User = await user.findById(userid);
-    console.log(User);
-    res.status(200).json({ User, message: "Successfully authenticated" });
+    if (User) {
+      res.status(200).json({
+        User,
+        message: "Successfully authenticated",
+        isAuthenticated: true,
+      });
+    } else {
+      throw new Error("User not found");
+    }
   } catch (error) {
     res.status(401).json({ error: "Invalid request!" });
   }
@@ -111,6 +118,7 @@ const forgetPassword = async (req, res) => {
   try {
     const { email } = req.body;
     const foundEmail = await user.findOne({ email });
+    console.log(foundEmail._id);
     if (foundEmail) {
       const token = await jwt.sign(
         {
@@ -120,6 +128,7 @@ const forgetPassword = async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: "1h" }
       );
+      console.log(token);
       await Transport.sendMail({
         from: process.env.EMAIL,
         to: email,

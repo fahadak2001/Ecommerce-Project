@@ -15,11 +15,14 @@ import ViewProduct from "./app/products/viewProduct";
 import Home from "./Home.jsx";
 import "./index.css";
 import cookie from "js-cookie";
+import ProtectedRoute from "./app/protectedRoute/ProtectedRoute.jsx";
+import NotFound from "./app/404/404.js";
+import AdminProtectedRoute from "./app/protectedRoute/adminProtectedRoute.jsx";
+import User from "./app/Admin/adminDashboard/users.jsx"
+import Product from "./app/Admin/adminDashboard/products.jsx"
 
 const RoutesWrapper = ({ triggereffect }) => {
 
-
-  const location = useLocation();
 
   const routes = (
     <Routes>
@@ -29,25 +32,32 @@ const RoutesWrapper = ({ triggereffect }) => {
       <Route path="/changepassword" element={<ChangePassword />} />
       <Route path="/forgotpassword" element={<Forgotpassword />} />
       <Route path="/reset/:token" element={<ResetPassword />} />
-      <Route path="/login/done" element={<Sucess />} />
+
       <Route path="/shop" element={<GetProducts triggereffect={triggereffect} />} />
       <Route path="/getOrders" element={<GetAllOrders triggereffect={triggereffect} />} />
       <Route path="/products/specific/:productId" element={<ViewProduct triggereffect={triggereffect} />} />
 
       <Route path="/admin/login" element={<LoginAdmin />} />
-      <Route path="/admin/login/sucess" element={<AdminDasboard />} />
+
+      <Route path="/404" element={<NotFound />} />
+
+      <Route
+        path="/login/done"
+        element={
+          <ProtectedRoute>
+            <Sucess />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route path="/admin/login/sucess" element={<AdminProtectedRoute><AdminDasboard /></AdminProtectedRoute >} />
+
+      <Route path="admin/login/sucess/users" element={<AdminProtectedRoute><AdminDasboard><User /></AdminDasboard></AdminProtectedRoute>} />
+
+      <Route path="admin/login/sucess/products" element={<AdminProtectedRoute><AdminDasboard><Product /></AdminDasboard></AdminProtectedRoute>} />
+
     </Routes>
   );
-
-  //const productSpecificPattern = /^\/products\/specific\/[^/]+$/;
-
-  // if (location.pathname !== '/' && location.pathname !== '/getorders' && location.pathname && !productSpecificPattern.test(location.pathname) && location.pathname !== "/admin/login") {
-  //   return (
-  //     <div className="bg-gray-700" style={{ height: "450px", position: "relative", width: "450px", padding: "30px", margin: "auto", marginTop: "20px", marginBottom: "40px", borderRadius: "10%", color: "white" }}>
-  //       {routes}
-  //     </div>
-  //   );
-  // }
 
   return routes;
 };
