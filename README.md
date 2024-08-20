@@ -1,6 +1,6 @@
 This is a ongoing eccommerce project in MERN stack.
 
-Next:- Further working on landing page and admin dashboard
+Next:- Further working on landing page and admin dashboard, implementing sockets so user and admin can chat
 
 v1.7) Redux implemented in getting products in products dashboard...user can now upload products without any bugs using multer...
 
